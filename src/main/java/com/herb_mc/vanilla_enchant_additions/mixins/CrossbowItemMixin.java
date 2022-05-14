@@ -1,5 +1,6 @@
 package com.herb_mc.vanilla_enchant_additions.mixins;
 
+import com.herb_mc.vanilla_enchant_additions.VEAMod;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.item.ArrowItem;
@@ -24,8 +25,8 @@ public class CrossbowItemMixin {
             locals = LocalCapture.CAPTURE_FAILSOFT
     )
     private static void createArrow(World world, LivingEntity entity, ItemStack crossbow, ItemStack arrow, CallbackInfoReturnable<PersistentProjectileEntity> cir, ArrowItem arrowItem, PersistentProjectileEntity persistentProjectileEntity, int i) {
-        // piercing slightly increases damage
-        persistentProjectileEntity.setDamage(persistentProjectileEntity.getDamage() + (double) i * 0.2D);
+        // piercing increases damage, default to 0.25
+        persistentProjectileEntity.setDamage(persistentProjectileEntity.getDamage() + (double) i * VEAMod.defaultConfigs.get("piercingDmgBoost").getFloat());
     }
 
 }
