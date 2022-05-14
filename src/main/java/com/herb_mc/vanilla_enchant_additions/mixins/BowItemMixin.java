@@ -3,7 +3,6 @@ package com.herb_mc.vanilla_enchant_additions.mixins;
 import com.herb_mc.vanilla_enchant_additions.VEAMod;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ArrowItem;
 import net.minecraft.item.BowItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;

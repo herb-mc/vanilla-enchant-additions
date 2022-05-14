@@ -35,7 +35,7 @@ public class TridentEntityMixin {
     )
     public void tick(CallbackInfo ci) {
         // handle loyalty below bottom y
-        if (VEAMod.defaultConfigs.get("voidLoyalty").getBool()) {
+        if (VEAMod.configMaps.get("voidLoyalty").getBool()) {
             TridentEntity t = (TridentEntity) (Object) this;
             if (t.getPos().y < t.getWorld().getBottomY())
                 ((TridentEntityAccessor) this).setDealtDamage(true);
@@ -52,7 +52,7 @@ public class TridentEntityMixin {
     )
     protected void impalingBoost(EntityHitResult entityHitResult, CallbackInfo ci, Entity entity, float f, LivingEntity livingEntity) {
         // calculate trident damage boost if impaling boost was not already applied
-        if (VEAMod.defaultConfigs.get("extendedImpaling").getBool()) {
+        if (VEAMod.configMaps.get("extendedImpaling").getBool()) {
             float temp = EnchantmentHelper.getAttackDamage(((TridentEntityAccessor) this).getTridentStack(), livingEntity.getGroup());
             int i = EnchantmentHelper.getLevel(Enchantments.IMPALING, ((TridentEntityAccessor) this).getTridentStack().copy());
             if (temp <= 8.0 && i > 0 && (livingEntity.isTouchingWaterOrRain() || livingEntity instanceof DrownedEntity))
@@ -91,7 +91,7 @@ public class TridentEntityMixin {
             )
     )
     public float modifyDamage(float f) {
-        if (VEAMod.defaultConfigs.get("extendedImpaling").getBool())
+        if (VEAMod.configMaps.get("extendedImpaling").getBool())
             return Math.max(dmg, f);
         return f;
     }

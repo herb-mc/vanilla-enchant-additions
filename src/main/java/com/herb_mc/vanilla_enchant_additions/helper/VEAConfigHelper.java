@@ -14,6 +14,7 @@ import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Map;
 
 import static com.herb_mc.vanilla_enchant_additions.VEAMod.arrayContains;
@@ -75,7 +76,11 @@ public class VEAConfigHelper {
 
     public static void loadConf(MinecraftServer server) {
         {
-            VEAMod.configMaps = VEAMod.defaultConfigs;
+            HashMap<String, ConfigOpt> h = VEAMod.defaultConfigs;
+            for (String k : h.keySet())
+                VEAMod.configMaps.put(k, new ConfigOpt(h.get(k).getValue(), h.get(k).getAcceptedValues(), h.get(k).type));
+            for (String k : VEAMod.configMaps.keySet())
+                VEAMod.LOGGER.info("{}", k);
             Path path = getFile(server);
             ArrayList<String> confOptions = defaultOpts();
             try (BufferedReader reader = Files.newBufferedReader(path)) {

@@ -21,7 +21,7 @@ public class VEAConfigCommand {
     public static void register(CommandDispatcher<ServerCommandSource> dispatcher)
     {
         dispatcher.register((CommandManager.literal("vea-config")
-                .requires((serverCommandSource) -> serverCommandSource.hasPermissionLevel(0)))
+                .requires((serverCommandSource) -> serverCommandSource.hasPermissionLevel(VEAMod.configMaps.get("configGetPermLevel").getInt())))
                 .then(CommandManager.literal("get")
                         .executes((context) -> {
                             for (String option : VEAMod.optionList)
