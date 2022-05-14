@@ -3,6 +3,8 @@ A set of tweaks/mechanical changes to vanilla enchantments.
 ___
 ### List of tweaks:<br>
 Trident:
+- *channelingAlways* - Channeling functions outside of rain
+- *riptideAlways* - Riptide functions outside of rain or water
 - *extendedImpaling* - damage bonus applies to all mobs in water and drowned
 - *voidLoyalty* - automatically returns from the void
 
