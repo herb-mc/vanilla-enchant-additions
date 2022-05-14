@@ -87,6 +87,13 @@ public class VEAConfigCommand {
                 context.getSource().sendFeedback(new LiteralText("Unable to parse value " + arg + " as int"), false);
                 success = false;
             }
+        } else if (c.type == double.class) {
+            try {
+                t = Double.parseDouble(arg);
+            } catch (NumberFormatException e) {
+                context.getSource().sendFeedback(new LiteralText("Unable to parse value " + arg + " as double"), false);
+                success = false;
+            }
         } else {
             try {
                 t = Float.parseFloat(arg);

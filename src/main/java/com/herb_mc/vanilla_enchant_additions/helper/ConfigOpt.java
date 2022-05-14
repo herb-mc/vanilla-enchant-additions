@@ -34,6 +34,10 @@ public class ConfigOpt {
         return (float) value;
     }
 
+    public double getDouble() {
+        return (double) value;
+    }
+
     public boolean getBool() {
         return (boolean) value;
     }

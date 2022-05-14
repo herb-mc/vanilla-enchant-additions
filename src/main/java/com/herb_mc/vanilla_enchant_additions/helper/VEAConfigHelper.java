@@ -79,8 +79,6 @@ public class VEAConfigHelper {
             HashMap<String, ConfigOpt> h = VEAMod.defaultConfigs;
             for (String k : h.keySet())
                 VEAMod.configMaps.put(k, new ConfigOpt(h.get(k).getValue(), h.get(k).getAcceptedValues(), h.get(k).type));
-            for (String k : VEAMod.configMaps.keySet())
-                VEAMod.LOGGER.info("{}", k);
             Path path = getFile(server);
             ArrayList<String> confOptions = defaultOpts();
             try (BufferedReader reader = Files.newBufferedReader(path)) {
@@ -98,6 +96,12 @@ public class VEAConfigHelper {
                                         VEAMod.configMaps.get(fields[0]).setValue(Integer.parseInt(fields[1]));
                                     } catch (NumberFormatException e) {
                                         VEAMod.LOGGER.error("Unable to parse value '{}' for '{}' of type int", fields[1], fields[0], e);
+                                    }
+                                } else if (VEAMod.configMaps.get(fields[0]).type == double.class) {
+                                    try {
+                                        VEAMod.configMaps.get(fields[0]).setValue(Double.parseDouble(fields[1]));
+                                    } catch (NumberFormatException e) {
+                                        VEAMod.LOGGER.error("Unable to parse value '{}' for '{}' of type double", fields[1], fields[0], e);
                                     }
                                 } else {
                                     try {

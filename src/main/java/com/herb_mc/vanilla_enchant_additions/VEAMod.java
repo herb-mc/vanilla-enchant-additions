@@ -21,9 +21,9 @@ public class VEAMod {
         defaultConfigs.put("configGetPermLevel", new ConfigOpt(0, permLevel, int.class));
         defaultConfigs.put("extendedImpaling", new ConfigOpt(true, bool, boolean.class));
         defaultConfigs.put("infinityForAll", new ConfigOpt(true, bool, boolean.class));
-        defaultConfigs.put("piercingDmgBoost", new ConfigOpt(0.25, any, float.class));
+        defaultConfigs.put("piercingDmgBoost", new ConfigOpt(0.25, any, double.class));
         defaultConfigs.put("riptideAlways", new ConfigOpt(true, bool, boolean.class));
-        defaultConfigs.put("soulSpeedBreakChance", new ConfigOpt(0.04, any, float.class));
+        defaultConfigs.put("soulSpeedBreakChance", new ConfigOpt(0.04f, any, float.class));
         defaultConfigs.put("voidLoyalty", new ConfigOpt(true, bool, boolean.class));
     }
 

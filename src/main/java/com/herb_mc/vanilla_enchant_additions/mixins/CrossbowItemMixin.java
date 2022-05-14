@@ -26,7 +26,7 @@ public class CrossbowItemMixin {
     )
     private static void createArrow(World world, LivingEntity entity, ItemStack crossbow, ItemStack arrow, CallbackInfoReturnable<PersistentProjectileEntity> cir, ArrowItem arrowItem, PersistentProjectileEntity persistentProjectileEntity, int i) {
         // piercing increases damage, default to 0.25
-        persistentProjectileEntity.setDamage(persistentProjectileEntity.getDamage() + (double) i * VEAMod.configMaps.get("piercingDmgBoost").getFloat());
+        persistentProjectileEntity.setDamage(persistentProjectileEntity.getDamage() + (double) i * VEAMod.configMaps.get("piercingDmgBoost").getDouble());
     }
 
 }

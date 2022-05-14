@@ -6,6 +6,13 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BowItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.item.RangedWeaponItem;
+import net.minecraft.network.packet.s2c.play.EntityVelocityUpdateS2CPacket;
+import net.minecraft.network.packet.s2c.play.InventoryS2CPacket;
+import net.minecraft.network.packet.s2c.play.ScreenHandlerSlotUpdateS2CPacket;
+import net.minecraft.screen.ScreenHandler;
+import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.util.Hand;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -13,6 +20,8 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
+
+import java.util.function.Predicate;
 
 @Mixin(BowItem.class)
 public class BowItemMixin {
@@ -46,4 +55,36 @@ public class BowItemMixin {
         return (bl2) || (bl && (itemStack.isOf(Items.SPECTRAL_ARROW) || itemStack.isOf(Items.TIPPED_ARROW)) && VEAMod.configMaps.get("infinityForAll").getBool());
     }
 
+    @Inject(
+            method = "onStoppedUsing",
+            at = @At("TAIL")
+    )
+    private void updateInv(ItemStack stack, World world, LivingEntity user, int remainingUseTicks, CallbackInfo ci) {
+        // send packets to update player inventory clientside
+        if(user instanceof ServerPlayerEntity && VEAMod.configMaps.get("infinityForAll").getBool()) {
+            int index = getArrowIndex((ServerPlayerEntity) user, stack);
+            if (index >= 0) ((ServerPlayerEntity) user).networkHandler.sendPacket(new ScreenHandlerSlotUpdateS2CPacket(-2, -2, index, itemStack));
+        }
+    }
+
+    public int getArrowIndex(PlayerEntity player, ItemStack stack) {
+        // find index of fired arrow
+        if (!(stack.getItem() instanceof RangedWeaponItem)) {
+            return -1;
+        } else {
+            Predicate<ItemStack> predicate = ((RangedWeaponItem)stack.getItem()).getHeldProjectiles();
+            if (predicate.test(player.getStackInHand(Hand.OFF_HAND))) {
+                return 40;
+            } else {
+                predicate = ((RangedWeaponItem)stack.getItem()).getProjectiles();
+                for(int i = 0; i < player.getInventory().size(); ++i) {
+                    ItemStack itemStack = player.getInventory().getStack(i);
+                    if (predicate.test(itemStack)) {
+                        return i;
+                    }
+                }
+                return -1;
+            }
+        }
+    }
 }
