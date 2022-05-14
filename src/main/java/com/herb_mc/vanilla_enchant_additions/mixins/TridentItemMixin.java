@@ -7,6 +7,8 @@ import net.minecraft.entity.MovementType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.TridentItem;
+import net.minecraft.network.packet.s2c.play.EntityVelocityUpdateS2CPacket;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
@@ -62,6 +64,7 @@ public class TridentItemMixin {
                     k *= n / m;
                     l *= n / m;
                     playerEntity.addVelocity(h, k, l);
+                    if(playerEntity instanceof ServerPlayerEntity) ((ServerPlayerEntity) playerEntity).networkHandler.sendPacket(new EntityVelocityUpdateS2CPacket(playerEntity));
                     playerEntity.useRiptide(20);
                     if (playerEntity.isOnGround())
                         playerEntity.move(MovementType.SELF, new Vec3d(0.0D, 1.1999999284744263D, 0.0D));

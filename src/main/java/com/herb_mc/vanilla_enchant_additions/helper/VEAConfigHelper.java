@@ -84,7 +84,7 @@ public class VEAConfigHelper {
                     String[] fields = line.replaceAll("[\\r\\n]", "").split(":\\s");
                     if (defaultContains(fields[0])) {
                         if (fields.length > 1) {
-                            if (VEAMod.configMaps.get(fields[0]).getAcceptedValues() != VEAMod.any && arrayContains(VEAMod.configMaps.get(fields[0]).getAcceptedValues(), fields[1])) {
+                            if (VEAMod.defaultConfigs.get(fields[0]).getAcceptedValues() == VEAMod.any || arrayContains(VEAMod.configMaps.get(fields[0]).getAcceptedValues(), fields[1])) {
                                 if (VEAMod.configMaps.get(fields[0]).type == boolean.class && parseBool(fields[0], fields[1]) != null) {
                                     VEAMod.configMaps.get(fields[0]).setValue(parseBool(fields[0], fields[1]));
                                     VEAMod.configMaps.get(fields[0]).setAcceptedValues(VEAMod.bool);
