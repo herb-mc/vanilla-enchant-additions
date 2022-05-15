@@ -9,7 +9,7 @@ Bow:
 - *infinityForAll* - Infinity applies to all types of arrows. [boolean value, default `true`]
 
 Crossbow:
-- *piercingDmgBoost* - slightly increases damage per level. [float, default `0.25`]
+- *piercingDmgBoost* - slightly increases damage per level. [double, default `0.25`]
 
 Trident:
 - *channelingAlways* - Channeling functions outside of rain. [boolean value, default `true`]

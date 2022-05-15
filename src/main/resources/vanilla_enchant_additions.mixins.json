@@ -9,6 +9,7 @@
     "CrossbowItemMixin",
     "LivingEntityMixin",
     "MinecraftServerMixin",
+    "PlayerEntityMixin",
     "TridentEntityAccessor",
     "TridentEntityMixin",
     "TridentItemMixin"
