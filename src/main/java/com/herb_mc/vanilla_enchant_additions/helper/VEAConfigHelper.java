@@ -17,8 +17,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.herb_mc.vanilla_enchant_additions.VEAMod.arrayContains;
-
 public class VEAConfigHelper {
 
     private static Path getFile(MinecraftServer server) {
@@ -78,7 +76,7 @@ public class VEAConfigHelper {
         {
             HashMap<String, ConfigOpt> h = VEAMod.defaultConfigs;
             for (String k : h.keySet())
-                VEAMod.configMaps.put(k, new ConfigOpt(h.get(k).getValue(), h.get(k).getAcceptedValues(), h.get(k).type));
+                VEAMod.configMaps.put(k, new ConfigOpt(h.get(k).getValue(), h.get(k).getCondition(), h.get(k).type, h.get(k).failMessage));
             Path path = getFile(server);
             ArrayList<String> confOptions = defaultOpts();
             try (BufferedReader reader = Files.newBufferedReader(path)) {
@@ -87,10 +85,10 @@ public class VEAConfigHelper {
                     String[] fields = line.replaceAll("[\\r\\n]", "").split(":\\s");
                     if (defaultContains(fields[0])) {
                         if (fields.length > 1) {
-                            if (VEAMod.defaultConfigs.get(fields[0]).getAcceptedValues() == VEAMod.any || arrayContains(VEAMod.configMaps.get(fields[0]).getAcceptedValues(), fields[1])) {
+                            if (VEAMod.defaultConfigs.get(fields[0]).getCondition().satisfiesCondition(fields[1])) {
                                 if (VEAMod.configMaps.get(fields[0]).type == boolean.class && parseBool(fields[0], fields[1]) != null) {
                                     VEAMod.configMaps.get(fields[0]).setValue(parseBool(fields[0], fields[1]));
-                                    VEAMod.configMaps.get(fields[0]).setAcceptedValues(VEAMod.bool);
+                                    VEAMod.configMaps.get(fields[0]).setAcceptedValues(VEAMod.isBoolean);
                                 } else if (VEAMod.configMaps.get(fields[0]).type == int.class) {
                                     try {
                                         VEAMod.configMaps.get(fields[0]).setValue(Integer.parseInt(fields[1]));

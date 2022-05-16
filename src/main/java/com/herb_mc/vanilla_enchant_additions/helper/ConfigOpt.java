@@ -4,21 +4,24 @@ public class ConfigOpt {
 
     public final Class type;
 
+    public String failMessage;
+
     private Object value;
 
-    private String[] acceptedValues;
+    private ConfigCondition acceptedValues;
 
-    public ConfigOpt(Object in, String[] arr, Class t) {
+    public ConfigOpt(Object in, ConfigCondition arr, Class t, String f) {
         value = in;
         acceptedValues = arr;
         type = t;
+        failMessage = f;
     }
 
     public void setValue(Object in) {
         value = in;
     }
 
-    public void setAcceptedValues(String[] in) {
+    public void setAcceptedValues(ConfigCondition in) {
         acceptedValues = in;
     }
 
@@ -46,7 +49,7 @@ public class ConfigOpt {
         return value.toString();
     }
 
-    public String[] getAcceptedValues() {
+    public ConfigCondition getCondition() {
         return acceptedValues;
     }
 

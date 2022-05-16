@@ -10,10 +10,12 @@ Bow:
 
 Crossbow:
 - *piercingDmgBoost* - slightly increases damage per level. [double, default `0.25`]
+- *multishotBurstDelay* - fires arrows as a burst instead of at once, delay value configurable. 0 disables. [int value, default `0`]
+- *multishotCount* - additional arrows to be fired by a Multishot crossbow. 0 disables.[int value, default `0`]
 
 Trident:
 - *channelingAlways* - Channeling functions outside of rain. [boolean value, default `true`]
-- *riptideAlways* - Riptide functions outside of rain or water. [boolean value, default `true`]
+- *riptideAlways* - Riptide functions outside of rain or water. Due to technical limitations, you cannot hold another item in the other hand to use this functionality. [boolean value, default `true`]
 - *extendedImpaling* - damage bonus applies to all mobs in water/rain and drowned. [boolean value, default `true`]
 - *voidLoyalty* - automatically returns from the void. [boolean value, default `true`]
 ___

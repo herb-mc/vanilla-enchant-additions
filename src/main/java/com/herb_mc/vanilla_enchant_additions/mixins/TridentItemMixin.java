@@ -24,8 +24,6 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import java.util.Objects;
-
 @Mixin(TridentItem.class)
 public class TridentItemMixin {
 
@@ -38,8 +36,7 @@ public class TridentItemMixin {
             cancellable = true)
     public void overrideRiptideCheck(World world, PlayerEntity user, Hand hand, CallbackInfoReturnable<TypedActionResult<ItemStack>> cir) {
         Hand other = hand == Hand.MAIN_HAND ? Hand.OFF_HAND : Hand.MAIN_HAND;
-        boolean b = !Objects.equals(user.getStackInHand(other).use(world, user, other), TypedActionResult.consume(user.getStackInHand(other)));
-        if (b && VEAMod.configMaps.get("riptideAlways").getBool() && EnchantmentHelper.getRiptide(user.getStackInHand(hand)) > 0) {
+        if (user.getStackInHand(other) == ItemStack.EMPTY && VEAMod.configMaps.get("riptideAlways").getBool() && EnchantmentHelper.getRiptide(user.getStackInHand(hand)) > 0) {
             user.setCurrentHand(hand);
             cir.setReturnValue(TypedActionResult.consume(user.getStackInHand(hand)));
         }

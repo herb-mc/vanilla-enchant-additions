@@ -14,8 +14,6 @@ import net.minecraft.text.LiteralText;
 
 import java.io.IOException;
 
-import static com.herb_mc.vanilla_enchant_additions.VEAMod.arrayContains;
-
 public class VEAConfigCommand {
 
     public static void register(CommandDispatcher<ServerCommandSource> dispatcher)
@@ -47,7 +45,6 @@ public class VEAConfigCommand {
                         .then(CommandManager.argument("option", StringArgumentType.string())
                                 .suggests((context,builder) -> CommandSource.suggestMatching(VEAMod.optionList,builder))
                                 .then(CommandManager.argument("value", StringArgumentType.string())
-                                        .suggests((context,builder) -> CommandSource.suggestMatching(VEAMod.configMaps.containsKey(context.getArgument("option", String.class)) ? VEAMod.configMaps.get(context.getArgument("option", String.class)).getAcceptedValues() : VEAMod.any, builder))
                                         .executes((context) -> {
                                             String temp = context.getArgument("value", String.class);
                                             boolean success = setValue(context, temp);
@@ -74,8 +71,8 @@ public class VEAConfigCommand {
         ConfigOpt c = VEAMod.configMaps.get(context.getArgument("option", String.class));
         boolean success = true;
         Object t = null;
-        if (c.getAcceptedValues() != VEAMod.any && !arrayContains(c.getAcceptedValues(), arg)) {
-            context.getSource().sendFeedback(new LiteralText("Value " + arg + " not accepted, acceptable values are " + arrayAsString(c.getAcceptedValues())), false);
+        if (!c.getCondition().satisfiesCondition(arg)) {
+            context.getSource().sendFeedback(new LiteralText("Value " + arg + " not accepted, " + c.failMessage), false);
             return false;
         }
         if (c.type == boolean.class) {
@@ -104,17 +101,6 @@ public class VEAConfigCommand {
         }
         if (success) c.setValue(t);
         return success;
-    }
-
-    private static String arrayAsString(String[] arr) {
-        StringBuilder t = new StringBuilder();
-        int i = 0;
-        for (String e : arr) {
-            i++;
-            t.append(e);
-            if (i != arr.length) t.append(", ");
-        }
-        return t.toString();
     }
 
 }
