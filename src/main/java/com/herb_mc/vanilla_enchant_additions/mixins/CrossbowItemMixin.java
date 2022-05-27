@@ -77,7 +77,7 @@ public class CrossbowItemMixin {
             index = 3
     )
     private static int modifiedMultishot(int j) {
-        VEAMod.LOGGER.info("{}", j);
+        // set count to updated multishot amount
         return j == 3 ? 3 + VEAMod.configMaps.get("multishotCount").getInt() : j;
     }
 
