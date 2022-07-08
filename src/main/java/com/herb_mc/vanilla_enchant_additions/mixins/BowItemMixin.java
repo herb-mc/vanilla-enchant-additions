@@ -7,10 +7,7 @@ import net.minecraft.item.BowItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.item.RangedWeaponItem;
-import net.minecraft.network.packet.s2c.play.EntityVelocityUpdateS2CPacket;
-import net.minecraft.network.packet.s2c.play.InventoryS2CPacket;
 import net.minecraft.network.packet.s2c.play.ScreenHandlerSlotUpdateS2CPacket;
-import net.minecraft.screen.ScreenHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Hand;
 import net.minecraft.world.World;
@@ -63,7 +60,7 @@ public class BowItemMixin {
         // send packets to update player inventory clientside
         if(user instanceof ServerPlayerEntity && VEAMod.configMaps.get("infinityForAll").getBool()) {
             int index = getArrowIndex((ServerPlayerEntity) user, stack);
-            if (index >= 0) ((ServerPlayerEntity) user).networkHandler.sendPacket(new ScreenHandlerSlotUpdateS2CPacket(-2, -2, index, itemStack));
+            if (index >= 0 && !world.isClient) ((ServerPlayerEntity) user).networkHandler.sendPacket(new ScreenHandlerSlotUpdateS2CPacket(-2, -2, index, itemStack));
         }
     }
 

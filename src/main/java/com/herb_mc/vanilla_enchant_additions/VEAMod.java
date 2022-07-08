@@ -15,7 +15,11 @@ public class VEAMod {
     public static String[] optionList = {
             "channelingAlways",
             "configGetPermLevel",
+            "extendedAxeEnchants",
+            "extendedElytraEnchants",
             "extendedImpaling",
+            "extendedTridentEnchants",
+            "infinityCompatibleWithMending",
             "infinityForAll",
             "multishotBurstDelay",
             "multishotCount",
@@ -39,7 +43,11 @@ public class VEAMod {
     static {
         defaultConfigs.put("channelingAlways", new ConfigOpt(true, isBoolean, boolean.class, isBool));
         defaultConfigs.put("configGetPermLevel", new ConfigOpt(0, permLevel, int.class, permLevelError));
+        defaultConfigs.put("extendedAxeEnchants", new ConfigOpt(true, isBoolean, boolean.class, isBool));
+        defaultConfigs.put("extendedElytraEnchants", new ConfigOpt(true, isBoolean, boolean.class, isBool));
         defaultConfigs.put("extendedImpaling", new ConfigOpt(true, isBoolean, boolean.class, isBool));
+        defaultConfigs.put("extendedTridentEnchants", new ConfigOpt(true, isBoolean, boolean.class, isBool));
+        defaultConfigs.put("infinityCompatibleWithMending", new ConfigOpt(true, isBoolean, boolean.class, isBool));
         defaultConfigs.put("infinityForAll", new ConfigOpt(true, isBoolean, boolean.class, isBool));
         defaultConfigs.put("multishotBurstDelay", new ConfigOpt(0, atLeastZeroInteger, int.class, atLeastZeroError));
         defaultConfigs.put("multishotCount", new ConfigOpt(0, atLeastZeroInteger, int.class, atLeastZeroError));

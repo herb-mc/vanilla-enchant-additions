@@ -65,7 +65,7 @@ public class TridentItemMixin {
                     k *= n / m;
                     l *= n / m;
                     playerEntity.addVelocity(h, k, l);
-                    if(playerEntity instanceof ServerPlayerEntity) ((ServerPlayerEntity) playerEntity).networkHandler.sendPacket(new EntityVelocityUpdateS2CPacket(playerEntity));
+                    if(playerEntity instanceof ServerPlayerEntity && !playerEntity.world.isClient()) ((ServerPlayerEntity) playerEntity).networkHandler.sendPacket(new EntityVelocityUpdateS2CPacket(playerEntity));
                     playerEntity.useRiptide(20);
                     if (playerEntity.isOnGround())
                         playerEntity.move(MovementType.SELF, new Vec3d(0.0D, 1.1999999284744263D, 0.0D));
