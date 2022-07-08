@@ -3,7 +3,6 @@ package com.herb_mc.vanilla_enchant_additions.etc;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.FireworkRocketEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.entity.projectile.ProjectileEntity;
@@ -18,9 +17,8 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.math.Quaternion;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.Vec3f;
+import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
-
-import java.util.Random;
 
 import static net.minecraft.item.CrossbowItem.hasProjectile;
 
@@ -57,9 +55,7 @@ public class CrossbowItemMethods {
             vec3f.rotate(quaternion);
             projectileEntity.setVelocity((double)vec3f.getX(), (double)vec3f.getY(), (double)vec3f.getZ(), speed, divergence);
 
-            crossbow.damage(bl ? 3 : 1, shooter, (e) -> {
-                e.sendToolBreakStatus(hand);
-            });
+            crossbow.damage(bl ? 3 : 1, shooter, (e) -> e.sendToolBreakStatus(hand));
             world.spawnEntity(projectileEntity);
             world.playSound(null, shooter.getX(), shooter.getY(), shooter.getZ(), SoundEvents.ITEM_CROSSBOW_SHOOT, SoundCategory.PLAYERS, 1.0F, soundPitch);
         }

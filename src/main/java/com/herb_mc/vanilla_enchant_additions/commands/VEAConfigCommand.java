@@ -10,7 +10,7 @@ import net.minecraft.server.command.ServerCommandSource;
 
 import com.mojang.brigadier.CommandDispatcher;
 import net.minecraft.server.command.CommandManager;
-import net.minecraft.text.LiteralText;
+import net.minecraft.text.Text;
 
 import java.io.IOException;
 
@@ -23,20 +23,20 @@ public class VEAConfigCommand {
                 .then(CommandManager.literal("get")
                         .executes((context) -> {
                             for (String option : VEAMod.optionList)
-                                context.getSource().sendFeedback(new LiteralText(option + ": " + VEAMod.configMaps.get(option).getAsString()), false);
+                                context.getSource().sendFeedback(Text.literal(option + ": " + VEAMod.configMaps.get(option).getAsString()), false);
                             return 1;
                         })
                         .then(CommandManager.argument("option", StringArgumentType.string())
                                 .suggests((context,builder) -> CommandSource.suggestMatching(VEAMod.optionList,builder))
                                 .executes((context) -> {
-                                    context.getSource().sendFeedback(new LiteralText(context.getArgument("option", String.class) + ": " + VEAMod.configMaps.get(context.getArgument("option", String.class)).getAsString()), false);
+                                    context.getSource().sendFeedback(Text.literal(context.getArgument("option", String.class) + ": " + VEAMod.configMaps.get(context.getArgument("option", String.class)).getAsString()), false);
                                     return 1;
                                 })
                         ))
                 .then(CommandManager.literal("reload")
                         .requires((serverCommandSource) -> serverCommandSource.hasPermissionLevel(4))
                         .executes((context) -> {
-                            context.getSource().sendFeedback(new LiteralText("Reloading configurations"), true);
+                            context.getSource().sendFeedback(Text.literal("Reloading configurations"), true);
                             VEAConfigHelper.loadConf(context.getSource().getServer());
                             return 1;
                         }))
@@ -49,8 +49,8 @@ public class VEAConfigCommand {
                                             String temp = context.getArgument("value", String.class);
                                             boolean success = setValue(context, temp);
                                             if (success) {
-                                                context.getSource().sendFeedback(new LiteralText(context.getArgument("option", String.class) + " set to " + VEAMod.configMaps.get(context.getArgument("option", String.class)).getAsString()), false);
-                                                VEAMod.LOGGER.info("{}: value of '{}' set to {}", context.getSource().getDisplayName().asString(), context.getArgument("option", String.class), context.getArgument("value", String.class));
+                                                context.getSource().sendFeedback(Text.literal(context.getArgument("option", String.class) + " set to " + VEAMod.configMaps.get(context.getArgument("option", String.class)).getAsString()), false);
+                                                VEAMod.LOGGER.info("{}: value of '{}' set to {}", context.getSource().getDisplayName().getString(), context.getArgument("option", String.class), context.getArgument("value", String.class));
                                                 try {
                                                     VEAConfigHelper.overwriteSettingToConf(context.getArgument("option", String.class), temp, context.getSource().getServer());
                                                 } catch (IOException e) {
@@ -72,7 +72,7 @@ public class VEAConfigCommand {
         boolean success = true;
         Object t = null;
         if (!c.getCondition().satisfiesCondition(arg)) {
-            context.getSource().sendFeedback(new LiteralText("Value " + arg + " not accepted, " + c.failMessage), false);
+            context.getSource().sendFeedback(Text.literal("Value " + arg + " not accepted, " + c.failMessage), false);
             return false;
         }
         if (c.type == boolean.class) {
@@ -81,21 +81,21 @@ public class VEAConfigCommand {
             try {
                 t = Integer.parseInt(arg);
             } catch (NumberFormatException e) {
-                context.getSource().sendFeedback(new LiteralText("Unable to parse value " + arg + " as int"), false);
+                context.getSource().sendFeedback(Text.literal("Unable to parse value " + arg + " as int"), false);
                 success = false;
             }
         } else if (c.type == double.class) {
             try {
                 t = Double.parseDouble(arg);
             } catch (NumberFormatException e) {
-                context.getSource().sendFeedback(new LiteralText("Unable to parse value " + arg + " as double"), false);
+                context.getSource().sendFeedback(Text.literal("Unable to parse value " + arg + " as double"), false);
                 success = false;
             }
         } else {
             try {
                 t = Float.parseFloat(arg);
             } catch (NumberFormatException e) {
-                context.getSource().sendFeedback(new LiteralText("Unable to parse value " + arg + " as float"), false);
+                context.getSource().sendFeedback(Text.literal("Unable to parse value " + arg + " as float"), false);
                 success = false;
             }
         }
