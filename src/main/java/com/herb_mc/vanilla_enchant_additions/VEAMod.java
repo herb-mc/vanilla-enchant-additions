@@ -21,6 +21,7 @@ public class VEAMod {
             "extendedTridentEnchants",
             "infinityCompatibleWithMending",
             "infinityForAll",
+            "multishotBurstAlt",
             "multishotBurstDelay",
             "multishotCount",
             "piercingDmgBoost",
@@ -49,6 +50,7 @@ public class VEAMod {
         defaultConfigs.put("extendedTridentEnchants", new ConfigOpt(true, isBoolean, boolean.class, isBool));
         defaultConfigs.put("infinityCompatibleWithMending", new ConfigOpt(true, isBoolean, boolean.class, isBool));
         defaultConfigs.put("infinityForAll", new ConfigOpt(true, isBoolean, boolean.class, isBool));
+        defaultConfigs.put("multishotBurstAlt", new ConfigOpt(true, isBoolean, boolean.class, isBool));
         defaultConfigs.put("multishotBurstDelay", new ConfigOpt(0, atLeastZeroInteger, int.class, atLeastZeroError));
         defaultConfigs.put("multishotCount", new ConfigOpt(0, atLeastZeroInteger, int.class, atLeastZeroError));
         defaultConfigs.put("piercingDmgBoost", new ConfigOpt(0.25, atLeastZeroNumeric, double.class, atLeastZeroNumericError));

@@ -36,7 +36,7 @@ public class CrossbowItemMethods {
         return ItemStack.EMPTY;
     }
 
-    public static void shoot(World world, LivingEntity shooter, Hand hand, ItemStack crossbow, ItemStack projectile, float soundPitch, boolean creative, float speed, float divergence, float simulated) {
+    public static void shoot(World world, LivingEntity shooter, Hand hand, ItemStack crossbow, ItemStack projectile, float soundPitch, boolean creative, float speed, float divergence, float simulated, boolean ignore) {
         if (!world.isClient) {
             boolean bl = projectile.isOf(Items.FIREWORK_ROCKET);
             ProjectileEntity projectileEntity;
@@ -44,6 +44,7 @@ public class CrossbowItemMethods {
                 projectileEntity = new FireworkRocketEntity(world, projectile, shooter, shooter.getX(), shooter.getEyeY() - 0.15000000596046448D, shooter.getZ(), true);
             } else {
                 projectileEntity = createArrow(world, shooter, crossbow, projectile);
+                ((PersistentProjectileEntityAccess) projectileEntity).setIgnoreInvulnerability(ignore);
                 if (creative || simulated != 0.0F) {
                     ((PersistentProjectileEntity)projectileEntity).pickupType = PersistentProjectileEntity.PickupPermission.CREATIVE_ONLY;
                 }

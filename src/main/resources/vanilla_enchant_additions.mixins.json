@@ -4,6 +4,7 @@
   "package": "com.herb_mc.vanilla_enchant_additions.mixins",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
+    "PersistentProjectileEntityMixin",
     "BowItemMixin",
     "CommandManagerMixin",
     "CrossbowItemMixin",

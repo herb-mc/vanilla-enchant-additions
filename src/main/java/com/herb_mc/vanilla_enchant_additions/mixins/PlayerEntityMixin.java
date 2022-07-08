@@ -25,14 +25,16 @@ public class PlayerEntityMixin implements PlayerEntityAccess {
     private Hand trackedHand;
     private ItemStack trackedItemStack;
     private ItemStack trackedProjectile;
+    private boolean ignoreIframes = false;
     private int activeTicks = 1;
 
     @Override
-    public void setTracked(int i, Hand h, ItemStack item, ItemStack proj) {
+    public void setTracked(int i, Hand h, ItemStack item, ItemStack proj, boolean ignore) {
         activeTicks = i;
         trackedHand = h;
         trackedItemStack = item;
         trackedProjectile = proj;
+        ignoreIframes = ignore;
     }
 
     @Inject(
@@ -68,7 +70,7 @@ public class PlayerEntityMixin implements PlayerEntityAccess {
     private void gatlingArrows(CallbackInfo ci) {
         PlayerEntity p = (PlayerEntity) (Object) this;
         if (activeTicks > 1 && p.getStackInHand(trackedHand) == trackedItemStack) {
-            if (activeTicks % VEAMod.configMaps.get("multishotBurstDelay").getInt() == 0) shoot(p.world, p, trackedHand, trackedItemStack, trackedProjectile, getSoundPitch(p.getRandom()), true, getSpeed(trackedProjectile), 1.0f, 0.0f);
+            if (activeTicks % VEAMod.configMaps.get("multishotBurstDelay").getInt() == 0) shoot(p.world, p, trackedHand, trackedItemStack, trackedProjectile, getSoundPitch(p.getRandom()), true, getSpeed(trackedProjectile), 1.0f, 0.0f, ignoreIframes);
             activeTicks--;
         } else if (activeTicks > 1 && p.getStackInHand(trackedHand) != trackedItemStack) {
             activeTicks = 1;

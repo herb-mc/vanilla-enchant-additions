@@ -53,7 +53,12 @@ public class CrossbowItemMixin {
     public void gatlingArrows(World world, PlayerEntity user, Hand hand, CallbackInfoReturnable<TypedActionResult<ItemStack>> cir, ItemStack itemStack) {
         // initiate player burst fire
         if (EnchantmentHelper.getLevel(Enchantments.MULTISHOT, itemStack) > 0 && VEAMod.configMaps.get("multishotBurstDelay").getInt() > 0)
-            ((PlayerEntityAccess) user).setTracked(VEAMod.configMaps.get("multishotBurstDelay").getInt() * (VEAMod.configMaps.get("multishotCount").getInt() + 3) - (VEAMod.configMaps.get("multishotBurstDelay").getInt() == 1 ? 0 : 1), hand, itemStack, getProjectile(itemStack));
+            // alt burst fire
+            if (user.isSneaking() && VEAMod.configMaps.get("multishotBurstAlt").getBool() && VEAMod.configMaps.get("multishotBurstDelay").getInt() > 0)
+                ((PlayerEntityAccess) user).setTracked(VEAMod.configMaps.get("multishotBurstDelay").getInt() * ((VEAMod.configMaps.get("multishotCount").getInt() + 3) / 2) - 1, hand, itemStack, getProjectile(itemStack), true);
+            // normal burst fire
+            else
+                ((PlayerEntityAccess) user).setTracked(VEAMod.configMaps.get("multishotBurstDelay").getInt() * (VEAMod.configMaps.get("multishotCount").getInt() + 3) - (VEAMod.configMaps.get("multishotBurstDelay").getInt() == 1 ? 0 : 1), hand, itemStack, getProjectile(itemStack), false);
     }
 
     @ModifyVariable(
@@ -94,7 +99,7 @@ public class CrossbowItemMixin {
         // multishot can fire multiple arrows
         if (i > 2 && VEAMod.configMaps.get("multishotCount").getInt() > 0) {
             float f = (i % 2 == 0 ? -1 : 1) *  (10.0f / VEAMod.configMaps.get("multishotCount").getInt() * (i - (i % 2 == 1 ? 2 : 3)));
-            shoot(world, entity, hand, stack, itemStack, fs[1 + i % 2], true, speed, divergence, f);
+            shoot(world, entity, hand, stack, itemStack, fs[1 + i % 2], true, speed, divergence, f, false);
         }
     }
 

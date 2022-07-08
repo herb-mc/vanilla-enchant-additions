@@ -14,8 +14,12 @@ Bow:
 
 Crossbow:
 - *piercingDmgBoost* - slightly increases damage per level. [double, default `0.25`]
+- *multishotBurstAlt* - while crouching: burst fires half the arrows, ignores invincibility frames. [boolean, default `true`]
 - *multishotBurstDelay* - fires arrows as a burst instead of at once, delay value configurable. 0 disables. [int value, default `0`]
 - *multishotCount* - additional arrows to be fired by a Multishot crossbow. 0 disables.[int value, default `0`]
+
+Elytra:
+- *extendedElytraEnchants* - elytra accepts chestplate enchantments [boolean value, default `true`]
 
 Trident:
 - *channelingAlways* - Channeling functions outside of rain. [boolean value, default `true`]
