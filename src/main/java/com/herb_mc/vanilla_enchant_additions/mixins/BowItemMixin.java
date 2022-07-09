@@ -63,6 +63,10 @@ public class BowItemMixin {
     )
     protected void setArmorPierce(ItemStack stack, World world, LivingEntity user, int remainingUseTicks, CallbackInfo ci, PlayerEntity playerEntity, boolean bl, ItemStack itemStack, int i, float f, boolean bl2, ArrowItem arrowItem, PersistentProjectileEntity persistentProjectileEntity) {
         ((PersistentProjectileEntityAccess) persistentProjectileEntity).setIgnoresArmor(EnchantmentHelper.getLevel(Enchantments.PIERCING, stack));
+<<<<<<< HEAD
+=======
+        ((PersistentProjectileEntityAccess) persistentProjectileEntity).setSmiteLevel(EnchantmentHelper.getLevel(Enchantments.SMITE, stack));
+>>>>>>> ea0cf2e20c66092f79f1201c243d646c80b0426d
     }
 
     @Inject(
