@@ -1,6 +1,5 @@
 package com.herb_mc.vanilla_enchant_additions.mixins;
 
-import com.herb_mc.vanilla_enchant_additions.VEAMod;
 import com.herb_mc.vanilla_enchant_additions.etc.PersistentProjectileEntityAccess;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
@@ -14,10 +13,21 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 public class PersistentProjectileEntityMixin implements PersistentProjectileEntityAccess {
 
     private boolean ignoresIframes = false;
+    private int armorPierce = 0;
 
     @Override
     public void setIgnoreInvulnerability(boolean t) {
         ignoresIframes = t;
+    }
+
+    @Override
+    public void setIgnoresArmor(int i) {
+        armorPierce = i;
+    }
+
+    @Override
+    public int getArmorPierce() {
+        return armorPierce;
     }
 
     @Redirect(

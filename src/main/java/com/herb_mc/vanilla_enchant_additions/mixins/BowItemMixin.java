@@ -1,12 +1,13 @@
 package com.herb_mc.vanilla_enchant_additions.mixins;
 
 import com.herb_mc.vanilla_enchant_additions.VEAMod;
+import com.herb_mc.vanilla_enchant_additions.etc.PersistentProjectileEntityAccess;
+import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.BowItem;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.item.RangedWeaponItem;
+import net.minecraft.entity.projectile.PersistentProjectileEntity;
+import net.minecraft.item.*;
 import net.minecraft.network.packet.s2c.play.ScreenHandlerSlotUpdateS2CPacket;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Hand;
@@ -50,6 +51,18 @@ public class BowItemMixin {
     private boolean bl2(boolean bl2) {
         // make infinity apply to all arrows
         return (bl2) || (bl && (itemStack.isOf(Items.SPECTRAL_ARROW) || itemStack.isOf(Items.TIPPED_ARROW)) && VEAMod.configMaps.get("infinityForAll").getBool());
+    }
+
+    @Inject(
+            method = "onStoppedUsing",
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lnet/minecraft/entity/projectile/PersistentProjectileEntity;setVelocity(Lnet/minecraft/entity/Entity;FFFFF)V"
+            ),
+            locals = LocalCapture.CAPTURE_FAILSOFT
+    )
+    protected void setArmorPierce(ItemStack stack, World world, LivingEntity user, int remainingUseTicks, CallbackInfo ci, PlayerEntity playerEntity, boolean bl, ItemStack itemStack, int i, float f, boolean bl2, ArrowItem arrowItem, PersistentProjectileEntity persistentProjectileEntity) {
+        ((PersistentProjectileEntityAccess) persistentProjectileEntity).setIgnoresArmor(EnchantmentHelper.getLevel(Enchantments.PIERCING, stack));
     }
 
     @Inject(

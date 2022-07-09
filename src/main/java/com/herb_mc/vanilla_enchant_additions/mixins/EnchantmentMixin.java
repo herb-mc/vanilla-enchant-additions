@@ -1,9 +1,7 @@
 package com.herb_mc.vanilla_enchant_additions.mixins;
 
 import com.herb_mc.vanilla_enchant_additions.VEAMod;
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.EnchantmentTarget;
-import net.minecraft.enchantment.SweepingEnchantment;
+import net.minecraft.enchantment.*;
 import net.minecraft.item.*;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -23,8 +21,15 @@ public class EnchantmentMixin {
             cancellable = true)
     protected void isAcceptableItem(ItemStack stack, CallbackInfoReturnable<Boolean> cir) {
         Item item = stack.getItem();
-        if (this.type == EnchantmentTarget.WEAPON && !(((Enchantment) (Object) this) instanceof SweepingEnchantment))
-            cir.setReturnValue(item instanceof SwordItem || (item instanceof TridentItem && VEAMod.configMaps.get("extendedTridentEnchants").getBool()) || (item instanceof AxeItem && VEAMod.configMaps.get("extendedAxeEnchants").getBool()));
+        // bows accept smite
+        if (item instanceof BowItem && VEAMod.configMaps.get("extendedBowEnchants").getBool() && (((Object) this).equals(Enchantments.SMITE)))
+            cir.setReturnValue(true);
+        // tridents and bows accept piercing
+        if (((item instanceof TridentItem && VEAMod.configMaps.get("extendedTridentEnchants").getBool()) || (item instanceof BowItem && VEAMod.configMaps.get("extendedBowEnchants").getBool())) && (((Enchantment) (Object) this) instanceof PiercingEnchantment))
+            cir.setReturnValue(true);
+        // allows sword enchantments to be put on axes and tridents if respective config options are enabled
+        if (this.type == EnchantmentTarget.WEAPON && !(((Enchantment) (Object) this) instanceof SweepingEnchantment) && (item instanceof SwordItem || (item instanceof TridentItem && VEAMod.configMaps.get("extendedTridentEnchants").getBool()) || (item instanceof AxeItem && VEAMod.configMaps.get("extendedAxeEnchants").getBool())))
+            cir.setReturnValue(true);
     }
 
 }

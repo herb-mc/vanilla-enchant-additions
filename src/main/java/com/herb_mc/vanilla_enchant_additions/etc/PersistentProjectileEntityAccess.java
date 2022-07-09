@@ -4,4 +4,8 @@ public interface PersistentProjectileEntityAccess {
 
     void setIgnoreInvulnerability(boolean t);
 
+    void setIgnoresArmor(int i);
+
+    int getArmorPierce();
+
 }

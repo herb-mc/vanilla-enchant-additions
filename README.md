@@ -9,6 +9,7 @@ Boots:
 - *soulSpeedBreakChance* - chance per tick of soul speed using durability. [float, default `0.04`]
 
 Bow:
+- *extendedBowEnchants* - allows Piercing to be applied to bows (armor piercing effect instead of mob piercing) [boolean value, default `true`]
 - *infinityForAll* - Infinity applies to all types of arrows. [boolean value, default `true`]
 - *infinityCompatibleWithMending* - Self explanatory. [boolean value, default `true`]
 
@@ -23,10 +24,13 @@ Elytra:
 
 Trident:
 - *channelingAlways* - Channeling functions outside of rain. [boolean value, default `true`]
-- *extendedTridentEnchants* - allows sword enchants to be applied to tridents in an anvil. [boolean, default `true`]
+- *extendedTridentEnchants* - allows sword enchants and piercing to be applied to tridents in an anvil. [boolean, default `true`]
 - *riptideAlways* - Riptide functions outside of rain or water. Due to technical limitations, you cannot hold another item in the other hand to use this functionality. [boolean value, default `true`]
 - *extendedImpaling* - damage bonus applies to all mobs in water/rain and drowned. [boolean value, default `true`]
 - *voidLoyalty* - automatically returns from the void. [boolean value, default `true`]
+
+Misc/multiple enchants:
+- *piercingIgnoreArmorPercent* - percentage of armor to ignore per level of piercing for Bows and Tridents. [double, default `0.05`]
 ___
 ### Configuration
 Configuration can be done in-game via the `vea-config` command or by editing `vanilla_enchant_additions.conf` in the world save folder.</br>
