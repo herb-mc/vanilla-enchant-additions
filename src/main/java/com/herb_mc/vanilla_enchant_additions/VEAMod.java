@@ -13,9 +13,11 @@ public class VEAMod {
     public static HashMap<String, ConfigOpt> defaultConfigs = new HashMap<>();
     public static HashMap<String, ConfigOpt> configMaps = new HashMap<>();
     public static String[] optionList = {
+            "bowPiercing",
             "channelingAlways",
             "configGetPermLevel",
             "extendedAxeEnchants",
+            "extendedBowEnchants",
             "extendedElytraEnchants",
             "extendedImpaling",
             "extendedTridentEnchants",
@@ -25,6 +27,7 @@ public class VEAMod {
             "multishotBurstDelay",
             "multishotCount",
             "piercingDmgBoost",
+            "piercingIgnoreArmorPercent",
             "riptideAlways",
             "soulSpeedBreakChance",
             "voidLoyalty"
@@ -42,9 +45,11 @@ public class VEAMod {
     public static String permLevelError = "must be an an int >= 0 but <= 4";
 
     static {
+        defaultConfigs.put("bowPiercing", new ConfigOpt(true, isBoolean, boolean.class, isBool));
         defaultConfigs.put("channelingAlways", new ConfigOpt(true, isBoolean, boolean.class, isBool));
         defaultConfigs.put("configGetPermLevel", new ConfigOpt(0, permLevel, int.class, permLevelError));
         defaultConfigs.put("extendedAxeEnchants", new ConfigOpt(true, isBoolean, boolean.class, isBool));
+        defaultConfigs.put("extendedBowEnchants", new ConfigOpt(true, isBoolean, boolean.class, isBool));
         defaultConfigs.put("extendedElytraEnchants", new ConfigOpt(true, isBoolean, boolean.class, isBool));
         defaultConfigs.put("extendedImpaling", new ConfigOpt(true, isBoolean, boolean.class, isBool));
         defaultConfigs.put("extendedTridentEnchants", new ConfigOpt(true, isBoolean, boolean.class, isBool));
@@ -54,6 +59,7 @@ public class VEAMod {
         defaultConfigs.put("multishotBurstDelay", new ConfigOpt(0, atLeastZeroInteger, int.class, atLeastZeroError));
         defaultConfigs.put("multishotCount", new ConfigOpt(0, atLeastZeroInteger, int.class, atLeastZeroError));
         defaultConfigs.put("piercingDmgBoost", new ConfigOpt(0.25, atLeastZeroNumeric, double.class, atLeastZeroNumericError));
+        defaultConfigs.put("piercingIgnoreArmorPercent", new ConfigOpt(0.05, atLeastZeroNumeric, double.class, atLeastZeroNumericError));
         defaultConfigs.put("riptideAlways", new ConfigOpt(true, isBoolean, boolean.class, isBool));
         defaultConfigs.put("soulSpeedBreakChance", new ConfigOpt(0.04f, atLeastZeroNumeric, float.class, atLeastZeroNumericError));
         defaultConfigs.put("voidLoyalty", new ConfigOpt(true, isBoolean, boolean.class, isBool));
