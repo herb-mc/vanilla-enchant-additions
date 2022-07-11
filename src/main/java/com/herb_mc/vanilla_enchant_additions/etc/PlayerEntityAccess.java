@@ -5,6 +5,7 @@ import net.minecraft.util.Hand;
 
 public interface PlayerEntityAccess {
 
-    void setTracked(int i, Hand h, ItemStack item, ItemStack trackedProjectile, boolean ignoreIframes);
+    void setTracked(int i, Hand h, ItemStack item, ItemStack trackedProjectile);
+    boolean shouldDoKnockback();
 
 }

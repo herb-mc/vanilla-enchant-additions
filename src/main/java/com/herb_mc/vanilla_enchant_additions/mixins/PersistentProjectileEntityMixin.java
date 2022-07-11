@@ -1,6 +1,6 @@
 package com.herb_mc.vanilla_enchant_additions.mixins;
 
-import com.herb_mc.vanilla_enchant_additions.etc.PersistentProjectileEntityAccess;
+import com.herb_mc.vanilla_enchant_additions.etc.PersistentProjectileEntityInterface;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
@@ -10,14 +10,25 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Mixin(PersistentProjectileEntity.class)
-public class PersistentProjectileEntityMixin implements PersistentProjectileEntityAccess {
+public class PersistentProjectileEntityMixin implements PersistentProjectileEntityInterface {
 
     private boolean ignoresIframes = false;
+    private boolean doKnockback = true;
     private int armorPierce = 0;
 
     @Override
     public void setIgnoreInvulnerability(boolean t) {
         ignoresIframes = t;
+    }
+
+    @Override
+    public void setKnockback(boolean t) {
+        doKnockback = t;
+    }
+
+    @Override
+    public boolean getKnockback() {
+        return doKnockback;
     }
 
     @Override
@@ -41,6 +52,7 @@ public class PersistentProjectileEntityMixin implements PersistentProjectileEnti
         boolean b;
         if (instance instanceof LivingEntity) {
             if (ignoresIframes) {
+                if (((LivingEntity) instance).hurtTime > 0) armorPierce = 6;
                 ((LivingEntity) instance).hurtTime = 0;
                 instance.timeUntilRegen = 9;
             }

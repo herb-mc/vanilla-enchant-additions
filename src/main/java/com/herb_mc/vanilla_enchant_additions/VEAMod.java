@@ -16,6 +16,7 @@ public class VEAMod {
             "bowPiercing",
             "channelingAlways",
             "configGetPermLevel",
+            "crossbowInfinity",
             "extendedAxeEnchants",
             "extendedBowEnchants",
             "extendedElytraEnchants",
@@ -48,6 +49,7 @@ public class VEAMod {
         defaultConfigs.put("bowPiercing", new ConfigOpt(true, isBoolean, boolean.class, isBool));
         defaultConfigs.put("channelingAlways", new ConfigOpt(true, isBoolean, boolean.class, isBool));
         defaultConfigs.put("configGetPermLevel", new ConfigOpt(0, permLevel, int.class, permLevelError));
+        defaultConfigs.put("crossbowInfinity", new ConfigOpt(true, isBoolean, boolean.class, isBool));
         defaultConfigs.put("extendedAxeEnchants", new ConfigOpt(true, isBoolean, boolean.class, isBool));
         defaultConfigs.put("extendedBowEnchants", new ConfigOpt(true, isBoolean, boolean.class, isBool));
         defaultConfigs.put("extendedElytraEnchants", new ConfigOpt(true, isBoolean, boolean.class, isBool));

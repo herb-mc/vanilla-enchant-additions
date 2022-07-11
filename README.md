@@ -11,9 +11,9 @@ Boots:
 Bow:
 - *extendedBowEnchants* - allows Piercing to be applied to bows (armor piercing effect instead of mob piercing) [boolean value, default `true`]
 - *infinityForAll* - Infinity applies to all types of arrows. [boolean value, default `true`]
-- *infinityCompatibleWithMending* - Self explanatory. [boolean value, default `true`]
 
 Crossbow:
+- *crossbowInfinity* - Infinity applies to crossbows. [boolean value, default `true`]
 - *piercingDmgBoost* - slightly increases damage per level. [double, default `0.25`]
 - *multishotBurstAlt* - while crouching: burst fires half the arrows, ignores invincibility frames. [boolean, default `true`]
 - *multishotBurstDelay* - fires arrows as a burst instead of at once, delay value configurable. 0 disables. [int value, default `0`]
@@ -30,6 +30,7 @@ Trident:
 - *voidLoyalty* - automatically returns from the void. [boolean value, default `true`]
 
 Misc/multiple enchants:
+- *infinityCompatibleWithMending* - Self explanatory. [boolean value, default `true`]
 - *piercingIgnoreArmorPercent* - percentage of armor to ignore per level of piercing for Bows and Tridents. [double, default `0.05`]
 ___
 ### Configuration

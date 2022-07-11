@@ -1,7 +1,7 @@
 package com.herb_mc.vanilla_enchant_additions.mixins;
 
 import com.herb_mc.vanilla_enchant_additions.VEAMod;
-import com.herb_mc.vanilla_enchant_additions.etc.PersistentProjectileEntityAccess;
+import com.herb_mc.vanilla_enchant_additions.etc.PersistentProjectileEntityInterface;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.LivingEntity;
@@ -62,7 +62,7 @@ public class BowItemMixin {
             locals = LocalCapture.CAPTURE_FAILSOFT
     )
     protected void setArmorPierce(ItemStack stack, World world, LivingEntity user, int remainingUseTicks, CallbackInfo ci, PlayerEntity playerEntity, boolean bl, ItemStack itemStack, int i, float f, boolean bl2, ArrowItem arrowItem, PersistentProjectileEntity persistentProjectileEntity) {
-        ((PersistentProjectileEntityAccess) persistentProjectileEntity).setIgnoresArmor(EnchantmentHelper.getLevel(Enchantments.PIERCING, stack));
+        ((PersistentProjectileEntityInterface) persistentProjectileEntity).setIgnoresArmor(EnchantmentHelper.getLevel(Enchantments.PIERCING, stack));
     }
 
     @Inject(

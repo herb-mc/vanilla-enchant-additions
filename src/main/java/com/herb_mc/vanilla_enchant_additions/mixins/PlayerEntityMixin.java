@@ -9,6 +9,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.mob.DrownedEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.util.Hand;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -25,16 +26,20 @@ public class PlayerEntityMixin implements PlayerEntityAccess {
     private Hand trackedHand;
     private ItemStack trackedItemStack;
     private ItemStack trackedProjectile;
-    private boolean ignoreIframes = false;
     private int activeTicks = 1;
+    private boolean kb = true;
 
     @Override
-    public void setTracked(int i, Hand h, ItemStack item, ItemStack proj, boolean ignore) {
+    public void setTracked(int i, Hand h, ItemStack item, ItemStack proj) {
         activeTicks = i;
         trackedHand = h;
         trackedItemStack = item;
         trackedProjectile = proj;
-        ignoreIframes = ignore;
+    }
+
+    @Override
+    public boolean shouldDoKnockback() {
+        return kb;
     }
 
     @Inject(
@@ -70,7 +75,8 @@ public class PlayerEntityMixin implements PlayerEntityAccess {
     private void gatlingArrows(CallbackInfo ci) {
         PlayerEntity p = (PlayerEntity) (Object) this;
         if (activeTicks > 1 && p.getStackInHand(trackedHand) == trackedItemStack) {
-            if (activeTicks % VEAMod.configMaps.get("multishotBurstDelay").getInt() == 0) shoot(p.world, p, trackedHand, trackedItemStack, trackedProjectile, getSoundPitch(p.getRandom()), true, getSpeed(trackedProjectile), 1.0f, 0.0f, ignoreIframes);
+            kb = activeTicks == VEAMod.configMaps.get("multishotBurstDelay").getInt();
+            if (activeTicks % VEAMod.configMaps.get("multishotBurstDelay").getInt() == 0) ((CrossbowItemAccessor) Items.CROSSBOW).shootArrow(p.world, p, trackedHand, trackedItemStack, trackedProjectile, getSoundPitch(p.getRandom()), true, getSpeed(trackedProjectile), 1.0f, 0.0f);
             activeTicks--;
         } else if (activeTicks > 1 && p.getStackInHand(trackedHand) != trackedItemStack) {
             activeTicks = 1;

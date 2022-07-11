@@ -1,33 +1,35 @@
 package com.herb_mc.vanilla_enchant_additions.mixins;
 
 import com.herb_mc.vanilla_enchant_additions.VEAMod;
+import com.herb_mc.vanilla_enchant_additions.etc.PersistentProjectileEntityInterface;
 import com.herb_mc.vanilla_enchant_additions.etc.PlayerEntityAccess;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
-import net.minecraft.item.ArrowItem;
-import net.minecraft.item.CrossbowItem;
-import net.minecraft.item.ItemStack;
+import net.minecraft.entity.projectile.ProjectileEntity;
+import net.minecraft.item.*;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyArgs;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
+import org.spongepowered.asm.mixin.injection.invoke.arg.Args;
 
 import java.util.List;
 
 import static com.herb_mc.vanilla_enchant_additions.etc.CrossbowItemMethods.getProjectile;
-import static com.herb_mc.vanilla_enchant_additions.etc.CrossbowItemMethods.shoot;
 
 @Mixin(CrossbowItem.class)
 public class CrossbowItemMixin {
+
 
     @Inject(
             method = "createArrow",
@@ -55,11 +57,11 @@ public class CrossbowItemMixin {
         if (EnchantmentHelper.getLevel(Enchantments.MULTISHOT, itemStack) > 0 && VEAMod.configMaps.get("multishotBurstDelay").getInt() > 0)
             if (user.isSneaking() && VEAMod.configMaps.get("multishotBurstAlt").getBool() && VEAMod.configMaps.get("multishotBurstDelay").getInt() > 0) {
                 // alt burst fire
-                ((PlayerEntityAccess) user).setTracked(VEAMod.configMaps.get("multishotBurstDelay").getInt() * ((VEAMod.configMaps.get("multishotCount").getInt() + 3) / 2) - 1, hand, itemStack, getProjectile(itemStack), true);
+                ((PlayerEntityAccess) user).setTracked(VEAMod.configMaps.get("multishotBurstDelay").getInt() * ((VEAMod.configMaps.get("multishotCount").getInt() + 3) / 2) - 1, hand, itemStack, getProjectile(itemStack));
                 user.getItemCooldownManager().set(itemStack.getItem(), VEAMod.configMaps.get("multishotBurstDelay").getInt() * ((VEAMod.configMaps.get("multishotCount").getInt() + 3) / 2));
             } else {
                 // normal burst fire
-                ((PlayerEntityAccess) user).setTracked(VEAMod.configMaps.get("multishotBurstDelay").getInt() * (VEAMod.configMaps.get("multishotCount").getInt() + 3) - (VEAMod.configMaps.get("multishotBurstDelay").getInt() == 1 ? 0 : 1), hand, itemStack, getProjectile(itemStack), false);
+                ((PlayerEntityAccess) user).setTracked(VEAMod.configMaps.get("multishotBurstDelay").getInt() * (VEAMod.configMaps.get("multishotCount").getInt() + 3) - (VEAMod.configMaps.get("multishotBurstDelay").getInt() == 1 ? 0 : 1), hand, itemStack, getProjectile(itemStack));
                 user.getItemCooldownManager().set(itemStack.getItem(), VEAMod.configMaps.get("multishotBurstDelay").getInt() * (VEAMod.configMaps.get("multishotCount").getInt() + 3));
             }
     }
@@ -102,8 +104,48 @@ public class CrossbowItemMixin {
         // multishot can fire multiple arrows
         if (i > 2 && VEAMod.configMaps.get("multishotCount").getInt() > 0) {
             float f = (i % 2 == 0 ? -1 : 1) *  (10.0f / VEAMod.configMaps.get("multishotCount").getInt() * (i - (i % 2 == 1 ? 2 : 3)));
-            shoot(world, entity, hand, stack, itemStack, fs[1 + i % 2], true, speed, divergence, f, false);
+            ((CrossbowItemAccessor) Items.CROSSBOW).shootArrow(world, entity, hand, stack, itemStack, fs[1 + i % 2], true, speed, divergence, f);
         }
+    }
+
+    @Inject(
+            method = "shoot",
+            at = @At(
+                    target = "Lnet/minecraft/item/CrossbowItem;createArrow(Lnet/minecraft/world/World;Lnet/minecraft/entity/LivingEntity;Lnet/minecraft/item/ItemStack;Lnet/minecraft/item/ItemStack;)Lnet/minecraft/entity/projectile/PersistentProjectileEntity;",
+                    value = "INVOKE_ASSIGN"
+            ),
+            locals = LocalCapture.CAPTURE_FAILSOFT
+    )
+    private static void modifyShoot(World world, LivingEntity shooter, Hand hand, ItemStack crossbow, ItemStack projectile, float soundPitch, boolean creative, float speed, float divergence, float simulated, CallbackInfo ci, boolean bl, ProjectileEntity projectileEntity) {
+        if (EnchantmentHelper.getLevel(Enchantments.MULTISHOT, crossbow) > 0 && VEAMod.configMaps.get("multishotBurstDelay").getInt() > 0 && shooter.isSneaking()) {
+            if (projectileEntity instanceof PersistentProjectileEntity)
+                ((PersistentProjectileEntityInterface) projectileEntity).setIgnoreInvulnerability(true);
+            if (shooter instanceof PlayerEntity && !((PlayerEntityAccess) shooter).shouldDoKnockback())
+                if (projectileEntity instanceof PersistentProjectileEntity)
+                    ((PersistentProjectileEntityInterface) projectileEntity).setKnockback(false);
+        }
+    }
+
+    @ModifyArgs(
+            method = "loadProjectiles",
+            at = @At(
+                    target = "Lnet/minecraft/item/CrossbowItem;loadProjectile(Lnet/minecraft/entity/LivingEntity;Lnet/minecraft/item/ItemStack;Lnet/minecraft/item/ItemStack;ZZ)Z",
+                    value = "INVOKE"
+            )
+    )
+    private static void applyInfinity(Args args) {
+        if (EnchantmentHelper.getLevel(Enchantments.INFINITY, args.get(1)) >= 1) args.set(4, true);
+    }
+
+    @ModifyArgs(
+            method = "shootAll",
+            at = @At(
+                    target = "Lnet/minecraft/item/CrossbowItem;shoot(Lnet/minecraft/world/World;Lnet/minecraft/entity/LivingEntity;Lnet/minecraft/util/Hand;Lnet/minecraft/item/ItemStack;Lnet/minecraft/item/ItemStack;FZFFF)V",
+                    value = "INVOKE"
+            )
+    )
+    private static void applyInfinityToFired(Args args) {
+        if (EnchantmentHelper.getLevel(Enchantments.INFINITY, args.get(3)) >= 1) args.set(6, true);
     }
 
 }

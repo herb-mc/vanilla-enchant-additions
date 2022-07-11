@@ -21,6 +21,9 @@ public class EnchantmentMixin {
             cancellable = true)
     protected void isAcceptableItem(ItemStack stack, CallbackInfoReturnable<Boolean> cir) {
         Item item = stack.getItem();
+        // crossbows accept infinity
+        if (item instanceof CrossbowItem && VEAMod.configMaps.get("crossbowInfinity").getBool() && (((Object) this).equals(Enchantments.INFINITY)))
+            cir.setReturnValue(true);
         // bows accept smite
         if (item instanceof BowItem && VEAMod.configMaps.get("extendedBowEnchants").getBool() && (((Object) this).equals(Enchantments.SMITE)))
             cir.setReturnValue(true);
