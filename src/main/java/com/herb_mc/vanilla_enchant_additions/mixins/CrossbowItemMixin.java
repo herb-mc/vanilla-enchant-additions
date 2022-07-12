@@ -57,11 +57,11 @@ public class CrossbowItemMixin {
         if (EnchantmentHelper.getLevel(Enchantments.MULTISHOT, itemStack) > 0 && VEAMod.configMaps.get("multishotBurstDelay").getInt() > 0)
             if (user.isSneaking() && VEAMod.configMaps.get("multishotBurstAlt").getBool() && VEAMod.configMaps.get("multishotBurstDelay").getInt() > 0) {
                 // alt burst fire
-                ((PlayerEntityAccess) user).setTracked(VEAMod.configMaps.get("multishotBurstDelay").getInt() * ((VEAMod.configMaps.get("multishotCount").getInt() + 3) / 2) - 1, hand, itemStack, getProjectile(itemStack));
+                ((PlayerEntityAccess) user).setTracked(VEAMod.configMaps.get("multishotBurstDelay").getInt() * ((VEAMod.configMaps.get("multishotCount").getInt() + 3) / 2) - 1, hand, itemStack, getProjectile(itemStack), true);
                 user.getItemCooldownManager().set(itemStack.getItem(), VEAMod.configMaps.get("multishotBurstDelay").getInt() * ((VEAMod.configMaps.get("multishotCount").getInt() + 3) / 2));
             } else {
                 // normal burst fire
-                ((PlayerEntityAccess) user).setTracked(VEAMod.configMaps.get("multishotBurstDelay").getInt() * (VEAMod.configMaps.get("multishotCount").getInt() + 3) - (VEAMod.configMaps.get("multishotBurstDelay").getInt() == 1 ? 0 : 1), hand, itemStack, getProjectile(itemStack));
+                ((PlayerEntityAccess) user).setTracked(VEAMod.configMaps.get("multishotBurstDelay").getInt() * (VEAMod.configMaps.get("multishotCount").getInt() + 3) - (VEAMod.configMaps.get("multishotBurstDelay").getInt() == 1 ? 0 : 1), hand, itemStack, getProjectile(itemStack), false);
                 user.getItemCooldownManager().set(itemStack.getItem(), VEAMod.configMaps.get("multishotBurstDelay").getInt() * (VEAMod.configMaps.get("multishotCount").getInt() + 3));
             }
     }
@@ -117,10 +117,10 @@ public class CrossbowItemMixin {
             locals = LocalCapture.CAPTURE_FAILSOFT
     )
     private static void modifyShoot(World world, LivingEntity shooter, Hand hand, ItemStack crossbow, ItemStack projectile, float soundPitch, boolean creative, float speed, float divergence, float simulated, CallbackInfo ci, boolean bl, ProjectileEntity projectileEntity) {
-        if (EnchantmentHelper.getLevel(Enchantments.MULTISHOT, crossbow) > 0 && VEAMod.configMaps.get("multishotBurstDelay").getInt() > 0 && shooter.isSneaking()) {
+        if (shooter instanceof PlayerEntity && (((PlayerEntityAccess) shooter).useAlt()) && EnchantmentHelper.getLevel(Enchantments.MULTISHOT, crossbow) > 0 && VEAMod.configMaps.get("multishotBurstDelay").getInt() > 0 && shooter.isSneaking()) {
             if (projectileEntity instanceof PersistentProjectileEntity)
                 ((PersistentProjectileEntityInterface) projectileEntity).setIgnoreInvulnerability(true);
-            if (shooter instanceof PlayerEntity && !((PlayerEntityAccess) shooter).shouldDoKnockback())
+            if (!((PlayerEntityAccess) shooter).shouldDoKnockback())
                 if (projectileEntity instanceof PersistentProjectileEntity)
                     ((PersistentProjectileEntityInterface) projectileEntity).setKnockback(false);
         }

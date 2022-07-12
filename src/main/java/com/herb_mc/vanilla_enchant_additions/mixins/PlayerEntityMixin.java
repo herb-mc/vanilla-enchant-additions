@@ -28,13 +28,20 @@ public class PlayerEntityMixin implements PlayerEntityAccess {
     private ItemStack trackedProjectile;
     private int activeTicks = 1;
     private boolean kb = true;
+    private boolean altFire = false;
 
     @Override
-    public void setTracked(int i, Hand h, ItemStack item, ItemStack proj) {
+    public void setTracked(int i, Hand h, ItemStack item, ItemStack proj, boolean b) {
         activeTicks = i;
         trackedHand = h;
         trackedItemStack = item;
         trackedProjectile = proj;
+        altFire = b;
+    }
+
+    @Override
+    public boolean useAlt() {
+        return altFire;
     }
 
     @Override
